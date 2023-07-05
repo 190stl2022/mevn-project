@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 // 連結 MongoDB
 mongoose
-  .connect(procss.env.MONGODB_CONNECTION)
+  .connect(process.env.MONGODB_CONNECTION)
   .then(() => {
     console.log('連結到mongodb...');
   })
