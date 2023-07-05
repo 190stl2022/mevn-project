@@ -9,6 +9,7 @@ const authRoute = require('./routes').auth;
 const courseRoute = require('./routes').course;
 const passport = require('passport');
 require('./config/passport')(passport);
+const path = require('path');
 
 // 連結 MongoDB
 mongoose
@@ -24,13 +25,19 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
 app.use('/api/user', authRoute);
 // course route 應該被 jwt 保護，如果 request header內部沒有jwt，則request就會被視為是unauthorized
 app.use('/api/courses', passport.authenticate('jwt', { session: false }), courseRoute);
 
+// 網站首頁本身就是 URL /
 
-
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  })
+}
 
 app.listen(3000, () => {
   console.log('後端伺服器聆聽在port 3000 ...');
