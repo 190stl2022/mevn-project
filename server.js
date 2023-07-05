@@ -10,6 +10,7 @@ const courseRoute = require('./routes').course;
 const passport = require('passport');
 require('./config/passport')(passport);
 const path = require('path');
+const port = process.env.PORT || 3000;
 
 // 連結 MongoDB
 mongoose
@@ -39,6 +40,6 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
   })
 }
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('後端伺服器聆聽在port 3000 ...');
 });
